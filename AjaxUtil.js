@@ -1,6 +1,6 @@
 /**
  * Ajax封装，执行基本Ajax请求
- * @version 0.1.1
+ * @version 0.1.2
  * @author Howie Chen
  */
 
@@ -87,8 +87,14 @@ var AjaxUtil = function(){
 					return url;
 				}
 				case 'string': {
-					url += (url.indexOf('?') == -1 ? '?' : '&')
-						 + encodeURIComponent(arg);
+					var queries = arg.split('&'),
+						i, len;
+					for (i=0, len=queries.length; i<len; i++) {
+						var query = queries[i].split('='),
+							name  = query[0],
+							value = query[1];
+						url = arguments.callee(url, name, value);
+					}
 					return url;
 				}
 				default: {
@@ -162,7 +168,9 @@ var AjaxUtil = function(){
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;')
 		}
 		xhr.send(data);
-		return xhr;
+		if (method == 'POST') {
+			return xhr;
+		}
 	}
 
 	return {
