@@ -120,7 +120,7 @@ var AjaxUtil = function(){
 	function _onReadyStateChange(xhr, success, failure) {
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
-				if ((xhr.state >= 200 && xhr.state < 300) || xhr.state == 304) {
+				if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
 					success(xhr);
 				} else {
 					failure(xhr);
